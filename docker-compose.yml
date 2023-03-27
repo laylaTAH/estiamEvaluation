@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  front:
+    container_name: front_app
+    restart: always
+    build: ./ecommerce-flask-stripe/.
+    networks:
+      - db_network
+      - web_network
+  back1:
+    container_name: back1_flaskMaterialKit
+    restart: always
+    env_file: ./flask-material-kit/.env
+    build: ./flask-material-kit/.
+    networks:
+      - db_network
+      - web_network
+  back2:
+    container_name: back2_SoftUiDesign
+    restart: always
+    env_file: ./flask-soft-ui-design/.env
+    build: ./flask-soft-ui-design/.
+    networks:
+      - db_network
+      - web_network
+  nginx:
+    container_name: nginx
+    restart: always
+    image: "nginx:alpine-slim"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - web_network
+    
+networks:
+  db_network:
+    driver: bridge
+  web_network:
+    driver: bridge
+ 
